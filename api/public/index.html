@@ -3,12 +3,12 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
 <script
   src="https://code.jquery.com/jquery-3.4.1.min.js"
   integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
   crossorigin="anonymous"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.min.js"></script>
+<script src="flocking.js"></script>
 <script>
 $(function() {
     //JAVASCRIPT HERE
@@ -22,6 +22,19 @@ CSS
  -->
 
 <style type="text/css">
+
+@font-face {
+  font-family:"gsapp";
+  src: url("https://d37vpt3xizf75m.cloudfront.net/assets/gsapp_night/gsapp_night-cb90cbc601ff2a79cb57704add75ce397cd277cffe6aa194ce8433c983ff5197.eot");
+  src: url("https://d37vpt3xizf75m.cloudfront.net/assets/gsapp_night/gsapp_night-cb90cbc601ff2a79cb57704add75ce397cd277cffe6aa194ce8433c983ff5197.eot?#iefix") format('embedded-opentype'),
+       url("https://d37vpt3xizf75m.cloudfront.net/assets/gsapp_night/gsapp_night-1e77dcb719f10ffcb047a72184927ee2581aa08840a78e233b5668a0522e5f7d.woff2") format("woff2"),
+       url("https://d37vpt3xizf75m.cloudfront.net/assets/gsapp_night/gsapp_night-39d2ddeb98267c26cd90fdb01782c66f4b49403e2e774d6299f511bf0fbffae3.woff") format("woff"),
+       url("https://d37vpt3xizf75m.cloudfront.net/assets/gsapp_night/gsapp_night-e3385fd3e004b0ac64f78af6d4787271b58ff42b7a538b774583fb5233b6c25f.ttf") format("truetype"),
+       url("https://d37vpt3xizf75m.cloudfront.net/assets/gsapp_night/gsapp_night-f008b4461a9f691cc0472983606852d1afbb004892a7941ca4320bb3bc450112.svg#gsapp_night") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
 	margin: 0px;
 	padding: 0px;
@@ -29,10 +42,9 @@ body {
 }
 .flexcontainer {
 	height:100vh;
-	display: flex;
 	align-items: center;
-	justify-content: center;
 	flex-direction: row;
+    margin-top: 50px;
 }
 
 .centerdiv {
@@ -43,12 +55,15 @@ img {
 }
 
 .averystack {
+    position: relative;
+    width: 90vw;
+    height: 90vh;
 }
-.averystack img {
+.averystack * {
     position: absolute;
     top: 0px;
-    width: 500px !important;
-    height: 400px !important;
+    width: 90vw !important;
+    height: 90vh !important;
 }
 
 .masked_windows {
@@ -60,7 +75,11 @@ img {
       mask-size: 100% 100%;
 }
 .masked_facade {
-      mask-image: url("images/avery_facade.svg");
+      mask-image: url("images/avery_facade_only.svg");
+      mask-size: 100% 100%;
+}
+.masked_elevation {
+      mask-image: url("images/avery_elevation.svg");
       mask-size: 100% 100%;
 }
 .masked_envelope {
@@ -87,6 +106,28 @@ img {
     min-width: 80vw;
 }
 
+
+.title{
+    font-size: 2em;
+    margin: 1em 0em;
+}
+
+.font-gsapp {
+    font-family: 'gsapp', arial, sans-serif;
+}
+
+.font-arial {
+    font-family: "union-regular", arial, sans-serif;
+    font-size: 1.2em;
+    letter-spacing: 0.05em;
+}
+
+a {
+    color: black;
+    border-bottom: 3px solid rgb(0, 255, 0);
+    text-decoration: none;
+}
+
 </style>
 
 <!-- 
@@ -95,7 +136,7 @@ HTML
 ///////////////
  -->
 
-<title>UnLocal Benefit Art Auction 2017</title>
+<title>Virtual Avery</title>
 </head>
 
 
@@ -103,19 +144,28 @@ HTML
 
 <div class="gsapp-header"></div>
 
-<div class="flexcontainer">
+<div class="flexcontainer font-arial" >
 
     <div class="centerdiv">
 
 
+
     <div class="building_container">
+        <div class="title font-gsapp">Virtual Avery</div>
         <!--<img src="https://archive.news.columbia.edu/files_columbianews/slideshow/avery05.jpg" />-->
         <!--<img src="images/avery_envelope_mask.png" />-->
         <div class="averystack">
-            <img class="masked_facade" src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F660%2Fmedia%2Fimages%2F76418000%2Fjpg%2F_76418772_blacksquare.jpg&f=1&nofb=1" />
+            <!--<img class="masked_envelope" src="https://media.giphy.com/media/l4pTnr7B5DM3sqxqw/giphy.gif">-->
+            <div id="sketch-holder"></div>
             <img class="masked_outer" src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.farcrydesign.com%2Fimages%2FGIMP%2Fclouds_large.jpg&f=1&nofb=1" />
-            <img class="masked_windows" src="https://docs.google.com/drawings/d/e/2PACX-1vSZp7Nl7tVGQfnS64P6JPLmFQwOJDlt1bD3Xqo65Y2PI6WHAQ7RtsRiBGAbYPjJ9k1uprwlzCqk51MA/pub?w=1440&h=1080" />
+            <!--<iframe class="masked_outer" src="https://docs.google.com/presentation/d/e/2PACX-1vTbURAZJfGJDnBo7o9rtP86fFBHQgoCDFgFLbBRtPF_FV8gqVQ0ohPKHOSch93rHuWZWfu0_wBJw0B9/embed#slide=id.g71e68fe98a_0_1?start=false&loop=false&delayms=1000" frameborder="0" ></iframe>-->
+            <!--<img class="masked_outer" src="https://docs.google.com/drawings/d/e/2PACX-1vSWW74SQIWL-1xgCvYZQryFTzjbXA2aAoWcjM0WaSB8y-2BWTLr1BUgZ1N-abituUIcjC-J0OQtDbmL/pub?w=1200&h=900" />-->
+            <!--<img class="masked_facade" src="https://docs.google.com/drawings/d/e/2PACX-1vQWO88AtMXjUINpD_82JUOxgOG0Weh976uO-XvnzjjABOcN33i9A-z-gGqudST_iOiusZXhmdTGTuyI/pub?w=1440&h=1080" />-->
+
+            <!--<iframe class="masked_outer" src="https://docs.google.com/presentation/d/e/2PACX-1vTbURAZJfGJDnBo7o9rtP86fFBHQgoCDFgFLbBRtPF_FV8gqVQ0ohPKHOSch93rHuWZWfu0_wBJw0B9/embed?start=false&loop=false&delayms=60000" frameborder="0" ></iframe>-->
+            <img src="images/avery_elevation_thicker.svg" />
         </div>
+        M.S. Historic Preservation<a href="http://www.google.com">link</a>
 
         <div id="MSRED" class="room"></div>
         <div id="UP" class="room"></div>
@@ -157,8 +207,15 @@ function update_dom(data) {
 }
 
 $.get(apiURL, (res) => {
-
     update_dom(res);
+});
+
+$(".averystack").hover(function() {
+    console.log("yo");
+    $(".masked_facade").hide(1000);
+}, function() {
+    console.log("oy");
+    $(".masked_facade").show(1000);
 });
 
 </script>

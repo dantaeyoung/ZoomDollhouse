@@ -1,0 +1,34 @@
+{
+  "name": "zoomdollhouse",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "watch": {
+    "api": {
+        "patterns": [".", "api"],
+        "extensions": "html,js",
+        "delay": 1500
+    }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "api": "node api/webhookreceive.js",
+    "watch": "npm-watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dantaeyoung/ZoomDollhouse.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dantaeyoung/ZoomDollhouse/issues"
+  },
+  "homepage": "https://github.com/dantaeyoung/ZoomDollhouse#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "npm-watch": "^0.6.0",
+    "request-promise": "^4.2.5"
+  }
+}

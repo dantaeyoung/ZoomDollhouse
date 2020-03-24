@@ -1,0 +1,170 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+<script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+
+<script>
+$(function() {
+    //JAVASCRIPT HERE
+});
+</script>
+
+<!-- 
+///////////////
+CSS
+///////////////
+ -->
+
+<style type="text/css">
+body {
+	margin: 0px;
+	padding: 0px;
+	height: 100%;
+}
+.flexcontainer {
+	height:100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: row;
+}
+
+.centerdiv {
+}
+
+img {
+    max-width: 100%;
+}
+
+.averystack {
+}
+.averystack img {
+    position: absolute;
+    top: 0px;
+    width: 500px !important;
+    height: 400px !important;
+}
+
+.masked_windows {
+      mask-image: url("images/avery_window_mask.svg");
+      mask-size: 100% 100%;
+}
+.masked_outer {
+      mask-image: url("images/avery_outer_mask.svg");
+      mask-size: 100% 100%;
+}
+.masked_facade {
+      mask-image: url("images/avery_facade.svg");
+      mask-size: 100% 100%;
+}
+.masked_envelope {
+      mask-image: url("images/avery_envelope_mask.svg");
+      mask-size: 100% 100%;
+}
+
+.gsapp-header {
+    position: absolute;
+    height: 150px;
+    background: -webkit-gradient(linear, left top, left bottom, from(rgba(20,54,220,0.66)), color-stop(66%, rgba(20,54,220,0.125)), to(rgba(255,255,255,0)));
+    background: linear-gradient(to bottom, rgba(20,54,220,0.66), rgba(20,54,220,0.125) 66%, rgba(255,255,255,0) 100%);
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.building_container {
+    display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+    min-width: 80vw;
+}
+
+</style>
+
+<!-- 
+///////////////
+HTML
+///////////////
+ -->
+
+<title>UnLocal Benefit Art Auction 2017</title>
+</head>
+
+
+<body>
+
+<div class="gsapp-header"></div>
+
+<div class="flexcontainer">
+
+    <div class="centerdiv">
+
+
+    <div class="building_container">
+        <!--<img src="https://archive.news.columbia.edu/files_columbianews/slideshow/avery05.jpg" />-->
+        <!--<img src="images/avery_envelope_mask.png" />-->
+        <div class="averystack">
+            <img class="masked_facade" src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F660%2Fmedia%2Fimages%2F76418000%2Fjpg%2F_76418772_blacksquare.jpg&f=1&nofb=1" />
+            <img class="masked_outer" src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.farcrydesign.com%2Fimages%2FGIMP%2Fclouds_large.jpg&f=1&nofb=1" />
+            <img class="masked_windows" src="https://docs.google.com/drawings/d/e/2PACX-1vSZp7Nl7tVGQfnS64P6JPLmFQwOJDlt1bD3Xqo65Y2PI6WHAQ7RtsRiBGAbYPjJ9k1uprwlzCqk51MA/pub?w=1440&h=1080" />
+        </div>
+
+        <div id="MSRED" class="room"></div>
+        <div id="UP" class="room"></div>
+        <div id="CCCP" class="room"></div>
+        <div id="Conservation" class="room"></div>
+        <div id="HP" class="room"></div>
+        <div id="MArch500N" class="room"></div>
+        <div id="MArch500S" class="room"></div>
+        <div id="MArch600N" class="room"></div>
+        <div id="MArch600S" class="room"></div>
+        <div id="MArch700" class="room"></div>
+        <div id="MSHP301" class="room"></div>
+        <div id="MSUD206" class="room"></div>
+        <div id="UD" class="room"></div>
+        <div id="WoodShop" class="room"></div>
+        <div id="MakerSpace" class="room"></div>
+        <div id="March" class="room"></div>
+        <div id="MSRED" class="room"></div>
+        <div id="MSUP202" class="room"></div>
+        <div id="UPPhD" class="room"></div>
+        <div id="GSAPP" class="room"></div>
+        <div id="RED" class="room"></div>
+
+
+
+    </div>
+    </div>
+</div>
+
+<script>
+var apiURL = "http://localhost:3000/api/meetings/all";
+
+function update_dom(data) {
+    window.data = data;
+    for (const [key, value] of Object.entries(data)) {
+        $("#" + key + ".room").text(value.participants);
+      console.log(key, value);
+    }
+}
+
+$.get(apiURL, (res) => {
+
+    update_dom(res);
+});
+
+</script>
+
+
+
+</body>
+</html>
+
